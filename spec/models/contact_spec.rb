@@ -1,16 +1,27 @@
 describe Contact do 
 	it "has a valid factory" do 
-		expect(FactoryGirl.create(:contact)).to be_valid
+		expect(FactoryGirl.build(:contact)).to be_valid
 	end
-	it "is invalid without a firstname" do
-		expect(FactoryGirl.build(:contact, first_name: nil)).to be_valid
+	it "is invalid without a first name" do
+		contact = FactoryGirl.build(:contact, first_name: nil)
+		expect(contact).to have(1).errors_on(:first_name)
 	end
-	it "is invalid without a lastname" do
-		expect(FactoryGirl.build(:contact, last_name: nil)).to be_valid
+	it "is invalid without a last name" do
+		contact = FactoryGirl.build(:contact, last_name: nil) 
+		expect(contact).to have(1).errors_on(:last_name)
+	end
+	it "is invalid without an email address" do		
+		contact = FactoryGirl.build(:contact, email: nil)
+		expect(contact).to have(1).errors_on(:email)
 	end
 	it "returns a contact's full name as a string" do
 		contact = FactoryGirl.build(:contact, first_name: "John", last_name: "Doe") 
 		expect(contact.name).to eq "John Doe"
+	end
+	it "is invalid with a duplicate email address" do 
+		FactoryGirl.create(:contact, email: "aaron@example.com")
+		contact = FactoryGirl.build(:contact, email: "aaron@example.com") 
+		expect(contact).to have(1).errors_on(:email)
 	end
 
 	describe "filter last name by letter" do
