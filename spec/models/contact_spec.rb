@@ -26,10 +26,16 @@ describe Contact do
 
 	describe "filter last name by letter" do
 		before :each do 
-			@smith = FactoryGirl.create(:contact, last_name: "Smith") 
+			#@smith = FactoryGirl.create(:contact, last_name: "Smith") 
 			@jones = FactoryGirl.create(:contact, last_name: "Jones") 
 			@johnson = FactoryGirl.create(:contact, last_name: "Johnson") 
 		end
+
+		#Another notation (cached and lazily evaluated)
+		let(:smith) do
+			FactoryGirl.create(:contact, last_name: "Smith") 
+		end
+		#End Another notation
 
 		context "matching letters" do
 			it "returns a sorted array of results that match" do 
@@ -39,7 +45,7 @@ describe Contact do
 
 		context "non-matching letters" do
 			it "returns a sorted array of results that match" do 
-				expect(Contact.by_letter("J")).to_not include @smith
+				expect(Contact.by_letter("J")).to_not include :smith
 			end
 		end
 	end
